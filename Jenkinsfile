@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                       sh 'docker rm -f $(docker ps -a) || true'
-                      sh 'docker run -d -p 3000:3000 curdoperationsaiapp:${env.BUILD_ID}'
+                      sh 'docker run -d -p 3000:3000 sairamguthula/curdoperationsaiapp:${env.BUILD_ID}'
                 }
               
             }
