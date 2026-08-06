@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage ("build & SonarQube analysis") {
             steps {
-                withSonarQubeEnv('My SonarQube Server') {
+                withSonarQubeEnv('sonar-server') {
                 sh ''' $(SONAR_CLOUD)/bin/sonar-server \
                         -Dsonar.organization=curdoperation \
                         -Dsonar.projectKey=curdoperation_curd \
