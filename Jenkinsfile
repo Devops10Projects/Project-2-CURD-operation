@@ -13,7 +13,7 @@ pipeline {
                         -Dsonar.organization=curdoperation \
                         -Dsonar.projectKey=curdoperation_curd \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url= https://sonarcloud.io '''
+                        -Dsonar.host.url=https://sonarcloud.io '''
               }
             }
         }
