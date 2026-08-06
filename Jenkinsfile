@@ -12,7 +12,7 @@ pipeline {
                 sh ''' $SONAR_CLOUD/bin/sonar-scanner \
                         -Dsonar.organization=curdoperation \
                         -Dsonar.projectKey=curdoperation_curd \
-                        -Dsonar.sources= . \
+                        -Dsonar.sources=. \
                         -Dsonar.host.url= https://sonarcloud.io '''
               }
             }
