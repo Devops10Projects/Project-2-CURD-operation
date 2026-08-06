@@ -20,12 +20,12 @@ pipeline {
         stage ("build and push") {
             steps {
                 script {
-                docker.withRegistry('', 'docker-login') {
+                    docker.withRegistry('', 'docker-login') {
+                    def buildNumber = env.BUILD_NUMBER ?: '1'
+                    def customImage = docker.build("curdoperationsaiapp:latest")
 
-                def customImage = docker.build("curdoperationsaiapp:latest")
-
-        /* Push the container to the custom Registry */
-        customImage.push()
+                        /* Push the container to the custom Registry */
+                    customImage.push()
                 }
             }
         }
