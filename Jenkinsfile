@@ -35,7 +35,7 @@ pipeline {
         stage ("deploy to EC2") {
             steps {
                 script {
-                      sh 'docker rm -f $(docker ps -a) || true'
+                      sh 'docker rm -f $(docker ps -aq) || true'
                       sh 'docker run -d -p 3000:3000 sairamguthula/curdoperationsaiapp:${env.BUILD_ID}'
                 }
               
