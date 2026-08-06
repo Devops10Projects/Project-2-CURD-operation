@@ -7,6 +7,9 @@ pipeline {
 
     stages {
         stage ("build & SonarQube analysis") {
+            when {
+                expression { return env.LAST_BUILD_FAILED == 'false' }
+            }
             steps {
                 withSonarQubeEnv('sonar-server') {
                 sh ''' $SONAR_CLOUD/bin/sonar-scanner \
@@ -18,6 +21,9 @@ pipeline {
             }
         }
         stage ("build and push") {
+            when {
+                expression { return env.LAST_BUILD_FAILED == 'false' }
+            }
             steps {
                 script {
                     docker.withRegistry('', 'docker-login') {
