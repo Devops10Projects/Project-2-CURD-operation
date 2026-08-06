@@ -24,7 +24,7 @@ pipeline {
                 script {
                     docker.withRegistry('', 'docker-login') {
                     
-                    def customImage = docker.build("curdoperationsaiapp:${env.BUILD_ID}")
+                    def customImage = docker.build("sairamguthula/curdoperationsaiapp:${env.BUILD_ID}")
 
                         /* Push the container to the custom Registry */
                     customImage.push()
