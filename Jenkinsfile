@@ -1,53 +1,43 @@
-pipeline {
+pipelnie {
     agent any
-    
 
-    environment {
-        SCANNER_HOME = tool 'sonar-scanner'
-        SONAR_TOKEN = credentials('sonar-token')
-        SONAR_ORGANIZATION = 'jenkins-project-123'
-        SONAR_PROJECT_KEY = 'jenkins-project-123_ci-jenkins'
+        environment {
+        SONAR_CLOUD = tool 'sonar-server'
     }
 
     stages {
-        
-        stage('Code-Analysis') {
+        stage ("build & SonarQube analysis") {
             steps {
-                withSonarQubeEnv('SonarCloud') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner \
-  -Dsonar.organization=jenkins-project-123 \
-  -Dsonar.projectKey=jenkins-project-123_ci-jenkins \
-  -Dsonar.sources=. \
-  -Dsonar.host.url=https://sonarcloud.io '''
-                }
+                withSonarQubeEnv('My SonarQube Server') {
+                sh ''' $(SONAR_CLOUD)/bin/sonar-server \
+                        -Dsonar.organization=curdoperation \
+                        -Dsonar.projectKey=curdoperation_curd \
+                        -Dsonar.sources= . \
+                        -Dsonar.host.url= https://sonarcloud.io '''
+              }
             }
         }
-       
-        
-      
-       stage('Docker Build And Push') {
+        stage ("build and push") {
             steps {
                 script {
-                    docker.withRegistry('', 'docker-cred') {
-                        def buildNumber = env.BUILD_NUMBER ?: '1'
-                        def image = docker.build("pekker123/crud-123:latest")
-                        image.push()
-                    }
+                docker.withRegistry('', 'docker-login') {
+
+                def customImage = docker.build("curdoperationsaiapp:${env.BUILD_ID}")
+
+        /* Push the container to the custom Registry */
+        customImage.push()
                 }
             }
         }
-    
-       
-        stage('Deploy To EC2') {
+        }
+        stage ("deploy to EC2") {
             steps {
                 script {
-                        sh 'docker rm -f $(docker ps -q) || true'
-                        sh 'docker run -d -p 3000:3000 pekker123/crud-123:latest'
-                        
-                    
+                      sh 'docker rm -f $(docker ps -a) || true'
+                      sh 'docker run -d -p 3000:3000 curdoperationsaiapp:${env.BUILD_ID}'
                 }
+              
             }
         }
-        
-}
+    }
 }
